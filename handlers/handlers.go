@@ -14,7 +14,7 @@ import (
 type Bread struct {
 	BreadID string `json:"breadid"`
 	BreadName string `json:"breadname"`
-	BreadPrice string `json:"breadprice`
+	BreadPrice string `json:"breadprice"`
 	ImgURL string `json:"imgurl"`
 }
 
