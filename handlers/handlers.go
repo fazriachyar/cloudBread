@@ -134,7 +134,7 @@ func CreateBread(w http.ResponseWriter, r *http.Request) {
 
 		var lastInsertID int
 		
-		err := db.QueryRow("INSERT INTO bread(breadid, breadname, price, imgurl) VALUES($1, $2, $3, $4) returning id;", breadID, breadName, breadPrice, ImgURL).Scan(&lastInsertID)
+		err := db.QueryRow("INSERT INTO bread(breadid, breadname, breadprice, imgurl) VALUES($1, $2, $3, $4) returning id;", breadID, breadName, breadPrice, ImgURL).Scan(&lastInsertID)
 
 		checkErr(err)
 
