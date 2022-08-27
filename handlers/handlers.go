@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -23,15 +24,16 @@ type JsonResponse struct {
 	Message string `json:"message"`
 }
 
-const (
-	DB_USER = "fazriachyar11"
-	DB_PASSWORD = "200920"
-	DB_NAME = "cloudBread"
-)
+
+// const (
+// 	DB_USER = "fazriachyar11"
+// 	DB_PASSWORD = "200920"
+// 	DB_NAME = "cloudBread"
+// )
 
 func setupDB() *sql.DB {
-	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", DB_USER, DB_PASSWORD, DB_NAME)
-	db, err := sql.Open("postgres", dbinfo)
+	// dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", DB_USER, DB_PASSWORD, DB_NAME)
+	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 
 	checkErr(err)
 
@@ -42,7 +44,7 @@ func GetBreads(w http.ResponseWriter, r *http.Request) {
 	db := setupDB()
 
 	printMessage("Sedang memuat Cloud Bread ...")
-
+	db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, breadprice VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 	//get all bread from bread table
 	rows, err := db.Query("SELECT * FROM bread")
 
@@ -84,7 +86,7 @@ func GetBread(w http.ResponseWriter, r *http.Request) {
 		response = JsonResponse{Type: "error", Message: "Please insert ID bread..."}
 	} else {
 		db := setupDB()
-
+		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, breadprice VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 		printMessage("Showing Bread by id")
 
 		rows, err := db.Query("SELECT * FROM bread WHERE breadid = $1", breadID)
@@ -125,7 +127,7 @@ func CreateBread(w http.ResponseWriter, r *http.Request) {
 		response = JsonResponse{Type: "error", Message: "Please Insert data..."}
 	} else {
 		db := setupDB()
-
+		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, breadprice VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 		printMessage("Making new Bread...")
 
 		fmt.Println("Making new Bread with ID: " + breadID + " and name: " + breadName)
@@ -154,7 +156,7 @@ func DeleteBread(w http.ResponseWriter, r *http.Request) {
 		response = JsonResponse{Type: "error", Message: "Please insert ID bread..."}
 	} else {
 		db := setupDB()
-
+		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, breadprice VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 		printMessage("Deleting Bread...")
 
 		_, err := db.Exec("DELETE FROM bread where breadid = $1", breadID)
@@ -169,7 +171,7 @@ func DeleteBread(w http.ResponseWriter, r *http.Request) {
 
 func DeleteBreads(w http.ResponseWriter, r *http.Request) {
 	db := setupDB()
-
+	db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, breadprice VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");	
 	printMessage("Deleting all breads...")
 
 	_, err := db.Exec("DELETE FROM breads")
