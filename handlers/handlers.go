@@ -14,6 +14,7 @@ type Bread struct {
 	BreadID string `json:"breadid"`
 	BreadName string `json:"breadname"`
 	BreadPrice string `json:"breadprice`
+	ImgURL string `json:"imgurl"`
 }
 
 type JsonResponse struct {
@@ -57,13 +58,14 @@ func GetBreads(w http.ResponseWriter, r *http.Request) {
 		var BreadID string
 		var BreadName string
 		var BreadPrice string
+		var ImgURL string
 
-		err = rows.Scan(&id, &BreadID, &BreadName, &BreadPrice)
+		err = rows.Scan(&id, &BreadID, &BreadName, &BreadPrice, &ImgURL)
 
 		//cek err
 		checkErr(err)
 
-		breads = append(breads, Bread{BreadID: BreadID, BreadName: BreadName, BreadPrice: BreadPrice})
+		breads = append(breads, Bread{BreadID: BreadID, BreadName: BreadName, BreadPrice: BreadPrice, ImgURL: ImgURL})
 	}
 
 	var response = JsonResponse{Type: "success", Data: breads}
@@ -94,13 +96,14 @@ func GetBread(w http.ResponseWriter, r *http.Request) {
 			var BreadID string
 			var BreadName string
 			var BreadPrice string
+			var ImgURL string
 	
-			err = rows.Scan(&id, &BreadID, &BreadName, &BreadPrice)
+			err = rows.Scan(&id, &BreadID, &BreadName, &BreadPrice, &ImgURL)
 	
 			//cek err
 			checkErr(err)
 	
-			breads = append(breads, Bread{BreadID: BreadID, BreadName: BreadName, BreadPrice: BreadPrice})
+			breads = append(breads, Bread{BreadID: BreadID, BreadName: BreadName, BreadPrice: BreadPrice, ImgURL: ImgURL})
 		}
 		
 
@@ -114,10 +117,11 @@ func CreateBread(w http.ResponseWriter, r *http.Request) {
 	breadID := r.FormValue("breadid")
 	breadName := r.FormValue("breadname")
 	breadPrice := r.FormValue("breadprice")
+	ImgURL := r.FormValue("imgurl")
 
 	var response = JsonResponse{}
 
-	if breadID == "" || breadName == "" || breadPrice == "" {
+	if breadID == "" || breadName == "" || breadPrice == "" || ImgURL == "" {
 		response = JsonResponse{Type: "error", Message: "Please Insert data..."}
 	} else {
 		db := setupDB()
@@ -128,7 +132,7 @@ func CreateBread(w http.ResponseWriter, r *http.Request) {
 
 		var lastInsertID int
 		
-		err := db.QueryRow("INSERT INTO bread(breadid, breadname, price) VALUES($1, $2, $3) returning id;", breadID, breadName, breadPrice).Scan(&lastInsertID)
+		err := db.QueryRow("INSERT INTO bread(breadid, breadname, price, imgurl) VALUES($1, $2, $3, $4) returning id;", breadID, breadName, breadPrice, ImgURL).Scan(&lastInsertID)
 
 		checkErr(err)
 
