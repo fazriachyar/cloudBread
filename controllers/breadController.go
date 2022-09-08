@@ -101,7 +101,7 @@ func CreateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 	breadPrice := r.FormValue("breadprice")
 	ImgURL := r.FormValue("imgurl")
 
-	if bread.BreadID == "" || bread.BreadName == "" || bread.BreadPrice == "" || bread.ImgURL == "" {
+	if breadID == "" || breadName == "" || breadPrice == "" || ImgURL == "" {
 		// response = models.JsonResponse{Type: "error", Message: "Please Insert data..."}
 		response.Type = "error"
 		response.Message = "Please Insert data..."
