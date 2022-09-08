@@ -7,6 +7,7 @@ import (
 
 	//"os"
 
+	"github.com/fazriachyar/cloudBread/config"
 	"github.com/fazriachyar/cloudBread/libraries"
 	"github.com/fazriachyar/cloudBread/models"
 	"github.com/gorilla/mux"
@@ -17,7 +18,7 @@ import (
 
 
 func GetBreadsEndpoint(w http.ResponseWriter, r *http.Request) {
-	db := models.SetupDB()
+	db := config.SetupDB()
 
 	printMessage("Sedang memuat Cloud Bread ...")
 	db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, breadprice VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
@@ -59,12 +60,9 @@ func GetBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	if breadID == "" {
 		response = models.JsonResponse{Type: "error", Message: "Please insert ID bread..."}
-		// resp, err := json.Marshal(response)
-		// if err != nil {
-		// 	log.Fatalf("Error happened in JSON marshal. Err: %s", err)
-		// }
+		
 	} else {
-		db := models.SetupDB()
+		db := config.SetupDB()
 		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, price VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 		printMessage("Showing Bread by id")
 
@@ -103,7 +101,7 @@ func CreateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 	if bread.BreadID == "" || bread.BreadName == "" || bread.BreadPrice == "" || bread.ImgURL == "" {
 		response = models.JsonResponse{Type: "error", Message: "Please Insert data..."}
 	} else {
-		db := models.SetupDB()
+		db := config.SetupDB()
 		
 		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, price VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 		printMessage("Making new Bread...")
@@ -134,7 +132,7 @@ func DeleteBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf(response.Message)
 	} else {
 		
-		db := models.SetupDB()
+		db := config.SetupDB()
 		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, price VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 		printMessage("Deleting Bread...")
 
@@ -150,7 +148,7 @@ func DeleteBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteBreadsEndpoint(w http.ResponseWriter, r *http.Request) {
-	db := models.SetupDB()
+	db := config.SetupDB()
 	db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, price VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");	
 	printMessage("Deleting all breads...")
 
