@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	_ "os"
+	"os"
 
-	"github.com/fazriachyar/cloudBread/config"
+	_ "github.com/fazriachyar/cloudBread/config"
 	"github.com/fazriachyar/cloudBread/controllers"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -15,10 +15,10 @@ import (
 
 
 func main() {
-	// port := os.Getenv("PORT")
-	// if port == "" {
-    //     log.Fatal("$PORT must be set")
-    // }
+	port := os.Getenv("PORT")
+	if port == "" {
+        log.Fatal("$PORT must be set")
+    }
 	
 	router := mux.NewRouter()
 
@@ -40,7 +40,7 @@ func main() {
 
 	//serve
 	fmt.Println("Server started at localhost:1337 ")//quiet-journey-79993.herokuapp.com
-	log.Fatal(http.ListenAndServe(config.GetString("server.address"), router))
+	log.Fatal(http.ListenAndServe(":" + port, router))
 	//":" + port, router
 	//config.GetString("server.address"), router
 
