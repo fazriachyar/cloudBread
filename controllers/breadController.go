@@ -10,6 +10,7 @@ import (
 	"github.com/fazriachyar/cloudBread/config"
 	"github.com/fazriachyar/cloudBread/libraries"
 	"github.com/fazriachyar/cloudBread/models"
+	"github.com/fazriachyar/cloudBread/models/response"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
@@ -47,7 +48,7 @@ func GetBreadsEndpoint(w http.ResponseWriter, r *http.Request) {
 		breads = append(breads, models.Bread{BreadID: BreadID, BreadName: BreadName, BreadPrice: BreadPrice, ImgURL: ImgURL})
 	}
 
-	var response = models.JsonResponse{Type: "success", Data: breads}
+	var response = response.JsonResponse{Type: "success", Data: breads}
 
 	json.NewEncoder(w).Encode(response)
 }
@@ -56,11 +57,11 @@ func GetBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	breadID := params["breadid"]
 
-	var response models.JsonResponse
+	var response = response.JsonResponse{}
 
 	if breadID == "" {
-		response = models.JsonResponse{Type: "error", Message: "Please insert ID bread..."}
-		
+		response.Type = "error"
+		response.Message = "Please insert ID bread..."
 	} else {
 		db := config.SetupDB()
 		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, price VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
@@ -84,13 +85,15 @@ func GetBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 	
 			breads = append(breads, models.Bread{BreadID: BreadID, BreadName: BreadName, BreadPrice: BreadPrice, ImgURL: ImgURL})
 		}
-		response = models.JsonResponse{Type: "success", Data: breads}
+		// response = models.JsonResponse{Type: "success", Data: breads}
+		response.Type = "success"
+		response.Data = breads
 	}
 	json.NewEncoder(w).Encode(response)
 }
 
 func CreateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
-	var response models.JsonResponse
+	var response response.JsonResponse
 	var bread models.Bread
 
 	breadID := r.FormValue("breadid")
@@ -99,7 +102,9 @@ func CreateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 	ImgURL := r.FormValue("imgurl")
 
 	if bread.BreadID == "" || bread.BreadName == "" || bread.BreadPrice == "" || bread.ImgURL == "" {
-		response = models.JsonResponse{Type: "error", Message: "Please Insert data..."}
+		// response = models.JsonResponse{Type: "error", Message: "Please Insert data..."}
+		response.Type = "error"
+		response.Message = "Please Insert data..."
 	} else {
 		db := config.SetupDB()
 		
@@ -114,7 +119,9 @@ func CreateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 
 		libraries.CheckErr(err)
 
-		response = models.JsonResponse{Type: "success", Message: "Bread has been made successfully!"}
+		// response = models.JsonResponse{Type: "success", Message: "Bread has been made successfully!"}
+		response.Type = "success"
+		response.Message = "Bread has been made successfully!"
 	}
 
 	json.NewEncoder(w).Encode(response)
@@ -125,10 +132,12 @@ func DeleteBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	breadID := params["breadid"]
 
-	var response models.JsonResponse
+	var response response.JsonResponse
 	
 	if breadID == "" {
-		response = models.JsonResponse{Type: "error", Message: "Please insert ID bread..."}
+		// response = response.JsonResponse{Type: "error", Message: "Please insert ID bread..."}
+		response.Type = "error"
+		response.Message = "Please insert ID bread..."
 		fmt.Printf(response.Message)
 	} else {
 		
@@ -140,7 +149,9 @@ func DeleteBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 
 		libraries.CheckErr(err)
 
-		response = models.JsonResponse{Type: "success", Message: "The Bread has been deleted..."}
+		// response = models.JsonResponse{Type: "success", Message: "The Bread has been deleted..."}
+		response.Type = "success"
+		response.Message = "The Bread has been deleted..."
 		fmt.Printf(response.Message)
 	}
 
@@ -158,7 +169,7 @@ func DeleteBreadsEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	printMessage("All breads have been deleted !")
 
-	var response = models.JsonResponse{Type: "success", Message: "All breads have been deleted!"}
+	var response = response.JsonResponse{Type: "success", Message: "All breads have been deleted!"}
 	fmt.Printf(response.Message)
 	json.NewEncoder(w).Encode(response)
 }
