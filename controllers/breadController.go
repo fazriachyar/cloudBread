@@ -94,7 +94,6 @@ func GetBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 
 func CreateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 	var response response.JsonResponse
-	var bread models.Bread
 
 	breadID := r.FormValue("breadid")
 	breadName := r.FormValue("breadname")
@@ -111,7 +110,7 @@ func CreateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, price VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 		printMessage("Making new Bread...")
 
-		fmt.Println("Making new Bread with ID: " + bread.BreadID + " and name: " + bread.BreadName)
+		fmt.Println("Making new Bread with ID: " + breadID + " and name: " + breadName)
 
 		var lastInsertID int
 		
