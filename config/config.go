@@ -3,7 +3,7 @@ package config
 import (
 	"database/sql"
 	"fmt"
-	_ "os"
+	"os"
 
 	"github.com/fazriachyar/cloudBread/libraries"
 	"github.com/spf13/viper"
@@ -26,16 +26,16 @@ func GetInt(key string)(int) {
 	return viper.GetInt(key)
 }
 
-const (
-	DB_USER = "fazriachyar11"
-	DB_PASSWORD = "200920"
-	DB_NAME = "cloudBread"
-)
+// const (
+// 	DB_USER = "fazriachyar11"
+// 	DB_PASSWORD = "200920"
+// 	DB_NAME = "cloudBread"
+// )
 
 func SetupDB() *sql.DB {
-	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", DB_USER, DB_PASSWORD, DB_NAME)
+	//dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", DB_USER, DB_PASSWORD, DB_NAME)
 	//os.Getenv("DATABASE_URL")
-	db, err := sql.Open("postgres", dbinfo) //dbinfo
+	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL")) //dbinfo
 
 	libraries.CheckErr(err)
 
