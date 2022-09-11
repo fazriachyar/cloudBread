@@ -32,7 +32,7 @@ func main() {
 	router.HandleFunc("/breads/", controllers.CreateBreadEndpoint).Methods("POST")
 
 	//UPDATE BREAD by id
-	router.HandleFunc("/breads/{breadid}", controllers.UpdateBreadEndpoint).Methods("PATCH")
+	router.HandleFunc("/breads/{breadid}", controllers.UpdateBreadEndpoint).Methods("PUT")
 
 	//DELETE BREAD by id
 	router.HandleFunc("/breads/{breadid}", controllers.DeleteBreadEndpoint).Methods("DELETE")
