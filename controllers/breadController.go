@@ -126,6 +126,35 @@ func CreateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+func UpdateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	breadIDParam := params["breadid"]
+
+	breadID := r.FormValue("breadid")
+	breadName := r.FormValue("breadname")
+	breadPrice := r.FormValue("breadprice")
+	ImgURL := r.FormValue("imgurl")
+
+	var response response.JsonResponse
+
+	if breadIDParam == "" {
+		response.Type = "error"
+		response.Message = "Please insert ID bread..."
+		fmt.Printf(response.Message)
+	} else {
+		db := config.SetupDB()
+		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, price VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
+		printMessage("Updating Bread...")
+
+		_, err := db.Exec("UPDATE bread SET breadid = $1, breadname= $2, price = $3, imgurl = $4 WHERE breadid = $5;", breadID, breadName, breadPrice, ImgURL, breadIDParam)
+		libraries.CheckErr(err)
+
+		response.Type = "success"
+		response.Message = "Bread with ID : " + breadIDParam + " has been updated"
+	}
+	json.NewEncoder(w).Encode(response)
+}
+
 func DeleteBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
