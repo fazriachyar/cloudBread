@@ -146,7 +146,7 @@ func UpdateBreadEndpoint(w http.ResponseWriter, r *http.Request) {
 		db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, price VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 		printMessage("Updating Bread...")
 
-		_, err := db.Exec("UPDATE bread SET breadid = $1, breadname= $2, price = $3, imgurl = $4 WHERE breadid = $5;", breadID, breadName, breadPrice, ImgURL, breadIDParam)
+		_, err := db.Exec("UPDATE bread SET breadid = $1, breadname= $2, breadprice = $3, imgurl = $4 WHERE breadid = $5;", breadID, breadName, breadPrice, ImgURL, breadIDParam)
 		libraries.CheckErr(err)
 
 		response.Type = "success"
