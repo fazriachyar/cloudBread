@@ -1,5 +1,10 @@
 {
     "server": {
         "address": ":1337"
+    },
+    "db": {
+        "user": "fazriachyar11",
+        "pwd": "200920",
+        "name": "cloudBread"
     }
 }

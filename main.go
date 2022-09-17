@@ -12,8 +12,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-
-
 func main() {
 	// port := os.Getenv("PORT")
 	// if port == "" {
@@ -39,7 +37,6 @@ func main() {
 
 	//DELETE ALL BREAD
 	router.HandleFunc("/breads/", controllers.DeleteBreadsEndpoint).Methods("DELETE")
-
 
 	//serve
 	fmt.Println("Server started at localhost:1337 ")//quiet-journey-79993.herokuapp.com

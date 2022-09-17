@@ -26,16 +26,12 @@ func GetInt(key string)(int) {
 	return viper.GetInt(key)
 }
 
-const (
-	DB_USER = "fazriachyar11"
-	DB_PASSWORD = "200920"
-	DB_NAME = "cloudBread"
-)
-
 func SetupDB() *sql.DB {
-	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", DB_USER, DB_PASSWORD, DB_NAME)
+	// dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", DB_USER, DB_PASSWORD, DB_NAME)
+	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", GetString("db.user"), GetString("db.pwd"), GetString("db.name"))
 	//os.Getenv("DATABASE_URL")
 	db, err := sql.Open("postgres", dbinfo) //dbinfo
+	db.Exec("CREATE TABLE IF NOT EXISTS bread (id SERIAL,breadid VARCHAR(50) NOT NULL, breadname VARCHAR(50) NOT NULL, price VARCHAR(50) NOT NULL, imgurl VARCHAR(50), PRIMARY KEY (id))");
 
 	libraries.CheckErr(err)
 

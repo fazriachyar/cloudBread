@@ -10,3 +10,9 @@ func CheckErr(err error) {
 		panic(err)
 	}
 }
+
+func PrintMessage(message string) {
+	fmt.Println("")
+	fmt.Println(message)
+	fmt.Println("")
+}

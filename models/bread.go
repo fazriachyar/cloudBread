@@ -1,6 +1,5 @@
 package models
 
-
 type Bread struct {
 	BreadID string `json:"breadid"`
 	BreadName string `json:"breadname"`
