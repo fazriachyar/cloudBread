@@ -1,6 +1,7 @@
 # CloudBread
 Simple Microservices of cloud bread product using golang, gorilla/mux and postgresql databases, deployed on heroku
-
+<br>
+Incoming update, i'll create auth service to serve jwt web token
 ## Endpoint
 | Method  | Endpoint | Description |
 | ------------- | ------------- | ------------- |
